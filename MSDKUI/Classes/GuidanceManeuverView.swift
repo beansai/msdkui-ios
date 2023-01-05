@@ -79,10 +79,11 @@ import UIKit
         }
     }
     
+    /// Weak Reference to Tap Gesture.
     private weak var closeTapGestureRecognizer: UITapGestureRecognizer?
     
+    /// Completion when button are tapped.
     public var tapStopCompletion: (() -> Void)?
-
     
     /// The view state. The default value is `.noData`.
     public var state: State = .noData {
