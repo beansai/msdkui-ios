@@ -64,6 +64,27 @@ import UIKit
     /// The message label.
     @IBOutlet private(set) var messageLabel: UILabel!
 
+    /// The stop button.
+    @IBOutlet private(set) weak var stopImageView: UIImageView? {
+        didSet {
+            stopImageView?.isUserInteractionEnabled = true
+            if let tap = closeTapGestureRecognizer {
+                oldValue?.removeGestureRecognizer(tap)
+                stopImageView?.addGestureRecognizer(tap)
+            } else {
+                let cTap = UITapGestureRecognizer(target: self, action: #selector(tapStopNavigation))
+                stopImageView?.addGestureRecognizer(cTap)
+                closeTapGestureRecognizer = cTap
+            }
+        }
+    }
+    
+    /// Weak Reference to Tap Gesture.
+    private weak var closeTapGestureRecognizer: UITapGestureRecognizer?
+    
+    /// Completion when button are tapped.
+    public var tapStopCompletion: (() -> Void)?
+    
     /// The view state. The default value is `.noData`.
     public var state: State = .noData {
         didSet {
@@ -142,6 +163,10 @@ import UIKit
             info2Label.textColor = highlightManeuver ? tintColor : foregroundColor
         }
     }
+    
+    @objc private func tapStopNavigation(_ sender: Any?) {
+        tapStopCompletion?()
+    }
 
     // MARK: - Life cycle
 
@@ -172,6 +197,10 @@ import UIKit
 
         // Sets the initial state
         state = .noData
+        
+        // Setup initial event
+        let tapCloseGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapStopNavigation))
+        closeTapGestureRecognizer = tapCloseGestureRecognizer
     }
 
     /// Displays the no data state.
