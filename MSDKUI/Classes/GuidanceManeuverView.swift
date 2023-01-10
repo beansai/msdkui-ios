@@ -144,6 +144,7 @@ import UIKit
     public var foregroundColor: UIColor? {
         didSet {
             distanceLabel.textColor = foregroundColor
+            stopImageView?.tintColor = foregroundColor
             info1Label.textColor = foregroundColor
             info2Label.textColor = highlightManeuver ? tintColor : foregroundColor
             messageLabel.textColor = foregroundColor
